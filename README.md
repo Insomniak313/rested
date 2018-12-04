@@ -1,2 +1,5 @@
-# rested
-REST Symfony 3.4 Backend + React Frontend
+Guide d'installation
+====
+
+git clone ... <br>
+./install.bash
