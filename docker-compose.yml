@@ -1,0 +1,31 @@
+version: '2'
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db:/var/lib/mysql
+  back_prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.back.prod
+    ports:
+      - '81:80'
+    depends_on:
+      - mysql
+    volumes:
+      - ./back:/var/www/back
+  back_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.back.dev
+    ports:
+      - '82:80'
+    depends_on:
+      - mysql
+    volumes:
+      - ./back:/var/www/back
+volumes:
+  db:
+    driver: local
