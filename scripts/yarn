@@ -6,5 +6,5 @@ command -v docker >/dev/null 2>&1 || {
 	exit 1;
 }
 
-# On installe notre environnement Docker
-docker-compose up --build
+# On execute le script Yarn sur le conteneur "Nginx"
+docker exec -it $(docker container ls --filter name=rested_front --quiet) yarn "$*"

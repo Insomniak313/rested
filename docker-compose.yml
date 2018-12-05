@@ -40,6 +40,19 @@ services:
     volumes:
       - ./back:/var/www/back/
       - vendor:/var/www/back/vendor
+  # ----------------------
+  # 4 - Nginx
+  # ----------------------
+  front:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+    expose:
+    - 3000
+    ports:
+    - '83:3000'
+    volumes:
+    - ./front:/app
 volumes:
   db:
   vendor:

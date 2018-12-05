@@ -1,5 +1,8 @@
 .idea
 
+# Back
+
+/back/composer.lock
 /back/.web-server-pid
 /back/build/
 /back/phpunit.xml
@@ -16,3 +19,15 @@
 !/back/var/SymfonyRequirements.php
 /back/vendor/
 /back/web/bundles/
+
+# Front
+
+/front/yarn.lock
+/front/node_modules
+/front/.pnp
+/front/.pnp.js
+/front/coverage
+/front/build
+/front/npm-debug.log*
+/front/yarn-debug.log*
+/front/yarn-error.log*

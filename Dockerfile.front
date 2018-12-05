@@ -1,0 +1,13 @@
+FROM node:8
+
+# Ajout des sources
+COPY front/package.json /app/package.json
+
+# On se place dans le dossier qui nous interesse
+WORKDIR /app
+
+# Installation globale de react-scripts
+RUN yarn global add react-scripts
+
+# Installation des vendors et lancement du serveur de developpemnt
+CMD yarn && yarn start && sleep infinity
