@@ -22,12 +22,12 @@ cd rested
 
 Lors de l'installation, 3 conteneurs (à ce jour) sont créés :
 
-####Un conteneur MySQL
+#### Un conteneur MySQL
 
 Il contient la base de données.<br/>
 Le port 3306 (port par défaut de MySQL) est ouvert.
 
-####Un conteneur Composer
+### Un conteneur Composer
 
 Ce conteneur permet d'installer les différentes dépendances du projet back, sans avoir a installer Composer. <br/>
 Il est découplé du conteneur PHP afin de ne pas avoir à reconstruire le conteneur pour que les modifications du PHP soit prises en compte. <br/>
