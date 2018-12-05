@@ -7,4 +7,4 @@ command -v docker >/dev/null 2>&1 || {
 }
 
 # On execute le script PHP sur le conteneur "PHP7.2+Apache2.4"
-docker exec -it $(docker container ls --filter name=rested_back --quiet) php /var/www/back/"$*"
+docker exec -it $(docker container ls --filter name=rested_back --quiet) bash -c "cd /var/www/back && php $*"
