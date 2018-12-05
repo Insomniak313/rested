@@ -4,17 +4,40 @@
 
 Ceci est un projet d'application web fonctionnant avec un backend sous Symfony3.4 et un frontend sous React.
 
-### Docker
+## Pré-requis
 
 Afin de faciliter son installation, le projet utilise docker.<br/>
+https://docs.docker.com/install/
+
+## Installation
+
+```
+git clone https://github.com/Insomniak313/rested.git
+cd rested
+./install.bash
+```
+
+## Descriptif des conteneurs
+
+
 Lors de l'installation, 3 conteneurs (à ce jour) sont créés :
 
 ####Un conteneur MySQL
-Il contient la base de données
-####Un conteneur PHP7.2+Apache2.4 "Dev"
-Ce conteneur fait un **lien vers le code source** du backend (/back) et a son VirtualHost Apache qui pointe sur **app_dev.php**. L'avantage de ce lien est que l'on n'a pas a reconstruire le conteneur pour que les modifications du PHP soit prises en compte. L'inconvénient de ce conteneur est que la récupération des vendors composer doit se faire sur l'hôte (et il faut donc avoir composer d'installé sur sa machine).<br/>
-Ce conteneur est accessible à l'URL http://localhost:82 .
 
-####Un conteneur PHP7.2+Apache2.4 "Prod"
-Ce conteneur à accès a **une copie du code source** du backend (/back) et a son VirtualHost Apache qui pointe sur **app.php**. Comme il travaille sur une copie du code source, ce conteneur est capable d'installer tout seul les vendors composer. Par contre, tant que l'on n'a pas reconstruit le conteneur celui-ci ne percoit pas les modifications du code PHP.<br/>
-Ce conteneur est accessible à l'URL http://localhost:81 .
+Il contient la base de données.<br/>
+Le port 3306 (port par défaut de MySQL) est ouvert.
+
+####Un conteneur Composer
+
+Ce conteneur permet d'installer les différentes dépendances du projet back, sans avoir a installer Composer. <br/>
+Il est découplé du conteneur PHP afin de ne pas avoir à reconstruire le conteneur pour que les modifications du PHP soit prises en compte. <br/>
+Une fois que les vendors ont été récupérés et que les scripts post-installation ont été lancés, ce conteneur est terminé (il n'est alors plus utile).
+
+####Un conteneur PHP7.2+Apache2.4 "Dev" & "Prod"
+
+Ce conteneur à accès au code source de la partie back et aux vendors récupérés par le conteneur Composer. <br/>
+2 VirtualHost sont installés :
+<ul>
+<li>Un environnement "PROD", accessible à l'URL http://localhost:81</li>
+<li>Un environnement "DEV", accessible à l'URL http://localhost:82</li>
+</ul>

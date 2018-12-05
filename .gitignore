@@ -1,7 +1,6 @@
 .idea
 
 /back/.web-server-pid
-/back/app/config/parameters.yml
 /back/build/
 /back/phpunit.xml
 /back/var/*

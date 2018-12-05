@@ -1,0 +1,24 @@
+FROM php:7.2-apache
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Ajout des sources
+COPY back/composer.json /var/www/back/composer.json
+
+# On se place dans le dossier qui nous interesse
+WORKDIR /var/www/back
+
+# Installation de Curl, Git (nécessaire pour l'installation de symfony/polyfill-mbstring) et Composer
+RUN apt-get update \
+    && apt-get install -y curl git \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Ajout du script d'installation de la partie back, que l'on rend executable
+COPY docker/back/back_install.bash /back_install.bash
+RUN chmod 0755 /back_install.bash
+
+# Installation de l'extention pdo_mysql (nécessaire lorsque l'on va récupérer les vendors Composer)
+RUN docker-php-ext-install pdo_mysql
+
+# Et on lance le script d'installation de la partie back
+CMD ["/back_install.bash"]

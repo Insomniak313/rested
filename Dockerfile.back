@@ -1,0 +1,21 @@
+FROM php:7.2-apache
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Configuration d'Apache
+RUN a2enmod rewrite \
+    && echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+
+# Installation de l'extention pdo_mysql
+RUN docker-php-ext-install pdo_mysql
+
+# Ajout des VirtualHost PROD et DEV
+ADD docker/back/prod_vhost.conf /etc/apache2/sites-available/prod_vhost.conf
+ADD docker/back/dev_vhost.conf /etc/apache2/sites-available/dev_vhost.conf
+
+# Désactivation du VirtualHost par défaut
+RUN a2dissite 000-default.conf
+
+# Activation des VirtualHost PROD et DEV
+RUN a2ensite prod_vhost.conf
+RUN a2ensite dev_vhost.conf

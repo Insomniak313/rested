@@ -1,31 +1,36 @@
 version: '2'
 services:
-  mysql:
+  database:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - db:/var/lib/mysql
-  back_prod:
+  composer:
     build:
       context: .
-      dockerfile: Dockerfile.back.prod
+      dockerfile: Dockerfile.composer
+    volumes:
+      - ./back:/var/www/back/
+      - vendor:/var/www/back/vendor
+    depends_on:
+      - database
+  back:
+    build:
+      context: .
+      dockerfile: Dockerfile.back
+    expose:
+      - 80
+      - 8080
     ports:
       - '81:80'
+      - '82:8080'
     depends_on:
-      - mysql
+      - database
+      - composer
     volumes:
-      - ./back:/var/www/back
-  back_dev:
-    build:
-      context: .
-      dockerfile: Dockerfile.back.dev
-    ports:
-      - '82:80'
-    depends_on:
-      - mysql
-    volumes:
-      - ./back:/var/www/back
+      - ./back:/var/www/back/
+      - vendor:/var/www/back/vendor
 volumes:
   db:
-    driver: local
+  vendor:
