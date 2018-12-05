@@ -1,11 +1,17 @@
 version: '2'
 services:
+  # ----------------------
+  # 1 - MySQL
+  # ----------------------
   database:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - db:/var/lib/mysql
+  # ----------------------
+  # 2 - Composer
+  # ----------------------
   composer:
     build:
       context: .
@@ -15,6 +21,9 @@ services:
       - vendor:/var/www/back/vendor
     depends_on:
       - database
+  # ----------------------
+  # 3 - PHP7.2+Apache2.4
+  # ----------------------
   back:
     build:
       context: .
