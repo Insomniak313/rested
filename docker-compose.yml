@@ -3,26 +3,42 @@ services:
   # ----------------------
   # 1 - MySQL
   # ----------------------
-  database:
+  mysql:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 13306:3306
     volumes:
+      - ./docker/mysql:/docker-entrypoint-initdb.d
       - db:/var/lib/mysql
+
   # ----------------------
-  # 2 - Composer
+  # 2 - PhpMyAdmin
+  # ----------------------
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - 10085:80
+    environment:
+      PMA_HOST: mysql
+
+  # ----------------------
+  # 3 - Composer
   # ----------------------
   composer:
     build:
       context: .
       dockerfile: Dockerfile.composer
+    depends_on:
+      - mysql
     volumes:
       - ./back:/var/www/back/
       - vendor:/var/www/back/vendor
-    depends_on:
-      - database
+
   # ----------------------
-  # 3 - PHP7.2+Apache2.4
+  # 4 - PHP7.2+Apache2.4
   # ----------------------
   back:
     build:
@@ -32,16 +48,17 @@ services:
       - 80
       - 8080
     ports:
-      - '81:80'
-      - '82:8080'
+      - 10081:80
+      - 10082:8080
     depends_on:
-      - database
+      - mysql
       - composer
     volumes:
       - ./back:/var/www/back/
       - vendor:/var/www/back/vendor
+
   # ----------------------
-  # 4 - Nginx
+  # 5 - Nginx
   # ----------------------
   front:
     build:
@@ -50,9 +67,12 @@ services:
     expose:
     - 3000
     ports:
-    - '83:3000'
+    - 10083:3000
+    depends_on:
+    - back
     volumes:
     - ./front:/app
 volumes:
   db:
   vendor:
+    driver: local

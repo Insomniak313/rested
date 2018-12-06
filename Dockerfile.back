@@ -4,10 +4,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Configuration d'Apache
 RUN a2enmod rewrite \
+    && a2enmod headers \
     && echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
 # Installation de l'extention pdo_mysql
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mysqli
 
 # Ajout des VirtualHost PROD et DEV
 ADD docker/back/prod_vhost.conf /etc/apache2/sites-available/prod_vhost.conf

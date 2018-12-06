@@ -47,6 +47,27 @@ class Region
 	{
 		$this->departements = new ArrayCollection;
 	}
+
+    /**
+     * Fonction permettant de transformer l'objet Region en tableau
+     * @return array
+     */
+	public function toArray()
+    {
+        $departements = [];
+        foreach ($this->departements as $departement)
+        {
+            /**
+             * @var Departement $departement
+             */
+            $departements[] = $departement->toArray();
+        }
+        return [
+            'nom' => $this->getNom(),
+            'code' => $this->getCode(),
+            'departements' => $departements
+        ];
+    }
 	
     /**
 	 * Récupération de l'identifiant
@@ -133,4 +154,13 @@ class Region
 		
 		return $this;
 	}
+
+    /**
+     * Récupération de la collection de départements
+     * @return mixed
+     */
+	public function getDepartements()
+    {
+        return $this->departements;
+    }
 }

@@ -19,6 +19,9 @@ php bin/console doctrine:database:create
 # Mise à jour du schéma
 php bin/console doctrine:schema:update --force
 
+# Récupération des données depuis l'API https://api.gouv.fr/api/api-geo.html
+php bin/console app:load-data
+
 # Suppression du cache
 php bin/console cache:clear --env=prod
 

@@ -2,9 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Region;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
@@ -13,9 +15,27 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        return $this->render('default/index.html.twig', []);
+    }
+
+    /**
+     * @Route("/api/listRegions", name="list_regions")
+     */
+    public function listRegionsAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $regions = $em->getRepository(Region::class)->findAll();
+
+        $tabRegions = [];
+        foreach ($regions as $region)
+        {
+            /**
+             * @var Region $region
+             */
+            $tabRegions[] = $region->toArray();
+        }
+
+        return new JsonResponse($tabRegions);
     }
 }

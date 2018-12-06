@@ -32,7 +32,7 @@ class Departement
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=2)
+     * @ORM\Column(name="code", type="string", length=3)
      */
     private $code;
 	
@@ -42,19 +42,19 @@ class Departement
 	 * @ORM\JoinColumn(nullable=true)
 	 */
 	private $region;
-	
-	/**
-	 * @var ArrayCollection
-	 *
-	 * @ORM\OneToMany(targetEntity="Commune", mappedBy="departement", cascade={"persist", "remove"})
-	 */
-	private $communes;
-	
-	public function __construct()
-	{
-		$this->communes = new ArrayCollection;
-	}
-	
+
+    /**
+     * Fonction permettant de transformer l'objet Departement en tableau
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'nom' => $this->getNom(),
+            'code' => $this->getCode()
+        ];
+    }
+
     /**
 	 * Récupération de l'identifiant
      * @return int
@@ -123,41 +123,6 @@ class Departement
 	public function setRegion(Region $region)
 	{
 		$this->region = $region;
-		
-		return $this;
-	}
-	
-	/**
-	 * Ajoute une commune à la collection
-	 * @param Commune $commune
-	 * @return $this
-	 */
-	public function addCommune(Commune $commune)
-	{
-		$this->communes->add($commune);
-		
-		return $this;
-	}
-	
-	/**
-	 * Supprime une commune de la collection
-	 * @param Commune $commune
-	 * @return $this
-	 */
-	public function removeCommune(Commune $commune)
-	{
-		$this->communes->removeElement($commune);
-		
-		return $this;
-	}
-	
-	/**
-	 * Supprime toutes les communes de la collection
-	 * @return $this
-	 */
-	public function clearCommunes()
-	{
-		$this->communes->clear();
 		
 		return $this;
 	}

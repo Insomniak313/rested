@@ -18,7 +18,7 @@ COPY docker/back/back_install.bash /back_install.bash
 RUN chmod 0755 /back_install.bash
 
 # Installation de l'extention pdo_mysql (nécessaire lorsque l'on va récupérer les vendors Composer)
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install mysqli
 
 # Et on lance le script d'installation de la partie back
 CMD ["/back_install.bash"]

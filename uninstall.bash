@@ -6,5 +6,7 @@ command -v docker >/dev/null 2>&1 || {
 	exit 1;
 }
 
-# On installe notre environnement Docker
-docker-compose up --build  --force-recreate --renew-anon-volumes
+# On désinstalle notre environnement Docker
+docker-compose down
+docker system prune
+docker system prune --volumes
